@@ -1,0 +1,12 @@
+release/confirmpage.o
+release/main.o
+release/mainwindow.o
+release/prosetpage.o
+release/protree.o
+release/wizard.o
+release/qrc_res.o
+release/moc_confirmpage.o
+release/moc_mainwindow.o
+release/moc_prosetpage.o
+release/moc_protree.o
+release/moc_wizard.o
