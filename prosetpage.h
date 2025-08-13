@@ -15,10 +15,12 @@ public:
     explicit ProSetPage(QWidget *parent = nullptr);
     ~ProSetPage();
     void GetProSettings(QString &name, QString &path);
+
 protected:
     virtual bool isComplete() const;
+
 private slots:
-    void on_pushButton_clicked();
+    void on_pushButton_browse_clicked();
 
 private:
     Ui::ProSetPage *ui;

@@ -24,11 +24,11 @@ class Ui_ProSetPage
 public:
     QGridLayout *gridLayout_2;
     QGridLayout *gridLayout;
-    QLabel *label;
-    QLabel *label_2;
-    QLineEdit *lineEdit_2;
-    QPushButton *pushButton;
-    QLineEdit *lineEdit;
+    QLabel *label_Name;
+    QLabel *label_Path;
+    QLineEdit *lineEdit_Path;
+    QPushButton *pushButton_browse;
+    QLineEdit *lineEdit_Name;
     QLabel *tips;
 
     void setupUi(QWizardPage *ProSetPage)
@@ -43,30 +43,30 @@ public:
         gridLayout->setObjectName("gridLayout");
         gridLayout->setSizeConstraint(QLayout::SetDefaultConstraint);
         gridLayout->setContentsMargins(5, 5, 5, 5);
-        label = new QLabel(ProSetPage);
-        label->setObjectName("label");
+        label_Name = new QLabel(ProSetPage);
+        label_Name->setObjectName("label_Name");
 
-        gridLayout->addWidget(label, 0, 0, 1, 1);
+        gridLayout->addWidget(label_Name, 0, 0, 1, 1);
 
-        label_2 = new QLabel(ProSetPage);
-        label_2->setObjectName("label_2");
+        label_Path = new QLabel(ProSetPage);
+        label_Path->setObjectName("label_Path");
 
-        gridLayout->addWidget(label_2, 1, 0, 1, 1);
+        gridLayout->addWidget(label_Path, 1, 0, 1, 1);
 
-        lineEdit_2 = new QLineEdit(ProSetPage);
-        lineEdit_2->setObjectName("lineEdit_2");
+        lineEdit_Path = new QLineEdit(ProSetPage);
+        lineEdit_Path->setObjectName("lineEdit_Path");
 
-        gridLayout->addWidget(lineEdit_2, 1, 1, 1, 1);
+        gridLayout->addWidget(lineEdit_Path, 1, 1, 1, 1);
 
-        pushButton = new QPushButton(ProSetPage);
-        pushButton->setObjectName("pushButton");
+        pushButton_browse = new QPushButton(ProSetPage);
+        pushButton_browse->setObjectName("pushButton_browse");
 
-        gridLayout->addWidget(pushButton, 1, 2, 1, 1);
+        gridLayout->addWidget(pushButton_browse, 1, 2, 1, 1);
 
-        lineEdit = new QLineEdit(ProSetPage);
-        lineEdit->setObjectName("lineEdit");
+        lineEdit_Name = new QLineEdit(ProSetPage);
+        lineEdit_Name->setObjectName("lineEdit_Name");
 
-        gridLayout->addWidget(lineEdit, 0, 1, 1, 1);
+        gridLayout->addWidget(lineEdit_Name, 0, 1, 1, 1);
 
         tips = new QLabel(ProSetPage);
         tips->setObjectName("tips");
@@ -85,9 +85,9 @@ public:
     void retranslateUi(QWizardPage *ProSetPage)
     {
         ProSetPage->setWindowTitle(QCoreApplication::translate("ProSetPage", "WizardPage", nullptr));
-        label->setText(QCoreApplication::translate("ProSetPage", "Name:", nullptr));
-        label_2->setText(QCoreApplication::translate("ProSetPage", "Path:", nullptr));
-        pushButton->setText(QCoreApplication::translate("ProSetPage", "browse", nullptr));
+        label_Name->setText(QCoreApplication::translate("ProSetPage", "Name:", nullptr));
+        label_Path->setText(QCoreApplication::translate("ProSetPage", "Path:", nullptr));
+        pushButton_browse->setText(QCoreApplication::translate("ProSetPage", "browse", nullptr));
         tips->setText(QString());
     } // retranslateUi
 

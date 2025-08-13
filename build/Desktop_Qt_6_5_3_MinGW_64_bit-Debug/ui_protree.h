@@ -14,8 +14,8 @@
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
-#include <QtWidgets/QTreeWidget>
 #include <QtWidgets/QVBoxLayout>
+#include "protreewidget.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -24,8 +24,8 @@ class Ui_ProTree
 public:
     QVBoxLayout *verticalLayout_2;
     QVBoxLayout *verticalLayout;
-    QLabel *label;
-    QTreeWidget *treeWidget;
+    QLabel *label_pro;
+    ProTreeWidget *treeWidget;
 
     void setupUi(QDialog *ProTree)
     {
@@ -36,12 +36,12 @@ public:
         verticalLayout_2->setObjectName("verticalLayout_2");
         verticalLayout = new QVBoxLayout();
         verticalLayout->setObjectName("verticalLayout");
-        label = new QLabel(ProTree);
-        label->setObjectName("label");
+        label_pro = new QLabel(ProTree);
+        label_pro->setObjectName("label_pro");
 
-        verticalLayout->addWidget(label);
+        verticalLayout->addWidget(label_pro);
 
-        treeWidget = new QTreeWidget(ProTree);
+        treeWidget = new ProTreeWidget(ProTree);
         QTreeWidgetItem *__qtreewidgetitem = new QTreeWidgetItem();
         __qtreewidgetitem->setText(0, QString::fromUtf8("1"));
         treeWidget->setHeaderItem(__qtreewidgetitem);
@@ -63,7 +63,7 @@ public:
     void retranslateUi(QDialog *ProTree)
     {
         ProTree->setWindowTitle(QCoreApplication::translate("ProTree", "Dialog", nullptr));
-        label->setText(QCoreApplication::translate("ProTree", "\351\241\271\347\233\256\345\210\227\350\241\250:", nullptr));
+        label_pro->setText(QCoreApplication::translate("ProTree", "\351\241\271\347\233\256\345\210\227\350\241\250:", nullptr));
     } // retranslateUi
 
 };

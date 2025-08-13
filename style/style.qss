@@ -1,30 +1,68 @@
 MainWindow {
-    background-color:rgb(46,47,48);
+    background-color:rgb(46,47,48); /* 主窗口背景色-偏白色 */
 }
 
 QMenuBar {
-    color:rgb(231,231,231);
-    background-color:rgb(46,47,48);
+    color:rgb(231,231,231); /* 菜单栏文字颜色 */
+    background-color:rgb(46,47,48); /* 菜单栏背景色 */
 }
 
 QMenu {
-    color:rgb(231,231,231);
-    background-color:rgb(55,55,55);
+    color:rgb(231,231,231); /* 菜单文字颜色 */
+    background-color:rgb(55,55,55); /* 菜单背景色 */
 }
 
 QMenuBar::item:selected {
-    background-color:rgb(80,80,80);
+    background-color:rgb(80,80,80); /* 菜单栏选中菜单背景色 */
 }
 
 QMenu::item:selected {
-    background-color:rgb(39,96,154);
+    background-color:rgb(39,96,154); /* 菜单选中菜单项背景色*/
 }
 
 QWizard {
-    color:rgb(231,231,231);
-    background-color:rgb(46,47,48);
+    color:rgb(231,231,231); /* 向导框文字颜色 */
+    background-color:rgb(46,47,48); /* 向导框背景颜色 */
 }
 
 QWizard QLabel#tips {
-    color:red;
+    color:red; /* QWizard类下的QLabel子类，指定tips Label设置文字颜色 */
 }
+
+ProTree {
+    border-color:#9F9F9F;
+    border-style:solid;
+    border-width:1px 1px 1px 1px;
+    padding-right:10px;
+}
+
+QLabel#label_pro {
+    color:rgb(231,231,231);
+    border-color:#9F9F9F;
+    border-style:dotted;
+    border-width:0 0 1px 0;
+    padding-bottom:10px;
+    margin-bottom:5px;
+}
+
+QTreeView{
+    color:rgb(231,231,231);
+    background-color:rgb(46,47,48);
+    border:0px;
+}
+
+QTreeView::item:hover{
+    background-color:rgb(38,95,153);
+}
+
+QTreeView::item:selected{
+    background-color:rgb(38,95,153);
+}
+
+QTreeView::branch:open:has-children:!has-siblings,
+QTreeView::branch:open:has-children:has-siblings
+{image: url(:/icon/down.png);}
+
+QTreeView::branch:closed:has-children:!has-siblings,
+QTreeView::branch:closed:has-children:has-siblings
+{image: url(:/icon/right.png);}

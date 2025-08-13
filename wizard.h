@@ -14,8 +14,10 @@ class Wizard : public QWizard
 public:
     explicit Wizard(QWidget *parent = nullptr);
     ~Wizard();
-protected:
+
+protected: //一般情况下子类继承父类都是以protected继承
     void done(int result) override;
+
 private:
     Ui::Wizard *ui;
 

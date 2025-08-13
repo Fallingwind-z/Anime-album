@@ -14,13 +14,20 @@ SOURCES += \
     mainwindow.cpp \
     prosetpage.cpp \
     protree.cpp \
+    protreeitem.cpp \
+    protreethread.cpp \
+    protreewidget.cpp \
     wizard.cpp
 
 HEADERS += \
     confirmpage.h \
+    const.h \
     mainwindow.h \
     prosetpage.h \
     protree.h \
+    protreeitem.h \
+    protreethread.h \
+    protreewidget.h \
     wizard.h
 
 FORMS += \

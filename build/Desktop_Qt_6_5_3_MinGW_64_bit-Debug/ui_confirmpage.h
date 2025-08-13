@@ -13,6 +13,7 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QLabel>
+#include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWizardPage>
 
 QT_BEGIN_NAMESPACE
@@ -20,8 +21,8 @@ QT_BEGIN_NAMESPACE
 class Ui_ConfirmPage
 {
 public:
-    QGridLayout *gridLayout_2;
     QGridLayout *gridLayout;
+    QVBoxLayout *verticalLayout;
     QLabel *label;
 
     void setupUi(QWizardPage *ConfirmPage)
@@ -29,21 +30,20 @@ public:
         if (ConfirmPage->objectName().isEmpty())
             ConfirmPage->setObjectName("ConfirmPage");
         ConfirmPage->resize(950, 669);
-        gridLayout_2 = new QGridLayout(ConfirmPage);
-        gridLayout_2->setObjectName("gridLayout_2");
-        gridLayout = new QGridLayout();
+        gridLayout = new QGridLayout(ConfirmPage);
         gridLayout->setObjectName("gridLayout");
-        gridLayout->setContentsMargins(5, 5, 5, 5);
+        verticalLayout = new QVBoxLayout();
+        verticalLayout->setObjectName("verticalLayout");
         label = new QLabel(ConfirmPage);
         label->setObjectName("label");
         QFont font;
         font.setPointSize(10);
         label->setFont(font);
 
-        gridLayout->addWidget(label, 0, 0, 1, 1);
+        verticalLayout->addWidget(label);
 
 
-        gridLayout_2->addLayout(gridLayout, 0, 0, 1, 1);
+        gridLayout->addLayout(verticalLayout, 0, 0, 1, 1);
 
 
         retranslateUi(ConfirmPage);

@@ -19,11 +19,10 @@ public:
 
 private:
     Ui::MainWindow *ui;
-
+    QWidget *_protree; //用QWidget类型(QTreeWidget的父类)是为了降低类间的耦合性，避免可能的互引用问题
 
 private slots:
     void SlotCreatePro(bool);
-    // void SlotOpenPro(bool);
 };
 
 #endif // MAINWINDOW_H
