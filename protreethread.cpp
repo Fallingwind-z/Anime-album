@@ -5,8 +5,8 @@
 
 ProTreeThread::ProTreeThread(const QString &src_path, const QString &dist_path, QTreeWidgetItem *parent_item,
                              int file_count, QTreeWidget *self, QTreeWidgetItem *root, QObject *parent)
-    :QThread(parent), _src_path(src_path), _dist_path(dist_path),
-    _file_count(file_count), _parent_item(parent_item), _self(self), _root(root), _bstop(false)
+    :QThread(parent), _src_path(src_path), _dist_path(dist_path),_file_count(file_count),
+    _parent_item(parent_item), _self(self), _root(root), _bstop(false)
 {
 
 }
@@ -28,7 +28,7 @@ void ProTreeThread::CreateProTree(const QString &src_path, const QString &dist_p
     QDir import_dir(src_path);
     QStringList nameFilters; //设置文件过滤器
     import_dir.setFilter(QDir::Dirs | QDir::Files | QDir::NoDotAndDotDot); //setFilter里写需要留下的
-    import_dir.setSorting(QDir::Name);
+    import_dir.setSorting(QDir::DirsFirst | QDir::Name);
     QFileInfoList list = import_dir.entryInfoList(); //存储过滤出来的有效文件夹
     for(int i = 0; i < list.size(); i++)
     {

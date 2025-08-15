@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QResizeEvent>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -20,9 +21,17 @@ public:
 private:
     Ui::MainWindow *ui;
     QWidget *_protree; //用QWidget类型(QTreeWidget的父类)是为了降低类间的耦合性，避免可能的互引用问题
+    QWidget *_picshow;
+
+protected:
+    virtual void resizeEvent(QResizeEvent *event);
 
 private slots:
     void SlotCreatePro(bool);
+    void SlotOpenPro(bool);
+
+signals:
+    void SigOpenPro(const QString &path);
 };
 
 #endif // MAINWINDOW_H
