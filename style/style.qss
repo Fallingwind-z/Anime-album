@@ -75,7 +75,52 @@ PicShow{
    background-color:rgb(64,66,68);
 }
 
-#previousBtn, #nextBtn{
+#previousBtn, #nextBtn, #playBtn, #closeBtn, #slidepreBtn, #slidenextBtn
+{
     border:0px;
 }
+
+SlideShowDialog
+{
+    color:rgb(231,231,231);
+    background-color:rgb(46,47,48);
+}
+
+#preListWidget
+{
+    color:rgb(231,231,231);
+    background-color:rgb(46,47,48);
+    border:0px;
+}
+
+#preListWidget::item:hover
+{
+    background-color:rgb(38,95,153);
+}
+
+#preListWidget::item:selected
+{
+    background-color:rgb(38,95,153);
+}
+
+#preListWidget::item:selected:active
+{
+    border:2px solid #ffffff;
+}
+
+#preListWidget::item:selected
+{
+    border:2px solid #ffffff;
+}
+
+#slidePrewid
+{
+    margin-left:10px;
+}
+
+#slideNextwid
+{
+    margin-right:10px;
+}
+
 

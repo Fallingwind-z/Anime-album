@@ -3,6 +3,7 @@
 #include "protreethread.h"
 #include "const.h"
 #include "removeprodialog.h"
+#include "slideshowdialog.h"
 #include <QDir>
 #include <QGuiApplication>
 #include <QFileDialog>
@@ -10,18 +11,24 @@
 
 ProTreeWidget::ProTreeWidget(QWidget *parent):QTreeWidget(parent),
     _right_btn_item(nullptr), _active_item(nullptr), _import_progressdlg(nullptr), _open_progressdlg(nullptr),
-    _selected_item(nullptr), _thread_create_pro(nullptr), _thread_open_pro(nullptr)
+    _selected_item(nullptr), _thread_create_pro(nullptr), _thread_open_pro(nullptr),
+    _player(nullptr), _audioOutput(nullptr), _playlist(nullptr), _currentIndex(-1)
 {
     this->setHeaderHidden(true);
     connect(this, &ProTreeWidget::itemPressed, this, &ProTreeWidget::SlotItemPressed);
     _action_import = new QAction(QIcon(":/icon/import.png"), tr("导入文件"), this);
     _action_setstart = new QAction(QIcon(":/icon/core.png"), tr("设置活动项目"), this);
     _action_closepro = new QAction(QIcon(":/icon/close.png"), tr("关闭项目"), this);
-    _action_slideshow = new QAction(QIcon(":/icon/slideshow.png"), tr("轮播图播放"), this);
+    _action_slideshow = new QAction(QIcon(":/icon/slideshow.png"), tr("幻灯片播放"), this);
     connect(_action_import, &QAction::triggered, this, &ProTreeWidget::SlotImport);
     connect(_action_setstart, &QAction::triggered, this, &ProTreeWidget::SlotSetActive);
     connect(_action_closepro, &QAction::triggered, this, &ProTreeWidget::SlotClosePro);
     connect(this, &ProTreeWidget::itemDoubleClicked, this, &ProTreeWidget::SlotDoubleClickItem);
+    connect(_action_slideshow, &QAction::triggered, this, &ProTreeWidget::SlotSlideShow);
+
+    _player = new QMediaPlayer(this);
+    _audioOutput = new QAudioOutput(this);
+    _playlist = new MediaPlaylist(this);
 }
 
 void ProTreeWidget::AddProToTree(const QString &name, const QString &path)
@@ -288,6 +295,69 @@ void ProTreeWidget::SlotNextShow()
     this->setCurrentItem(curItem); // 在UI树形控件中设置当前选中项（高亮显示）
 }
 
+void ProTreeWidget::SlotSetMusic()
+{
+    QFileDialog file_dialog;
+    file_dialog.setFileMode(QFileDialog::ExistingFiles);
+    file_dialog.setWindowTitle(tr("选择音频文件"));
+    file_dialog.setDirectory(QDir::currentPath());
+    file_dialog.setViewMode(QFileDialog::Detail);
+    file_dialog.setNameFilter("(*.mp3 *.m4a *.flac)");
+    QStringList fileNames;
+    if(file_dialog.exec())
+    {
+        fileNames = file_dialog.selectedFiles();
+    }
+    else
+    {
+        return;
+    }
+
+    if(fileNames.length() <= 0)
+    {
+        return;
+    }
+
+    _playlist->clear();
+    for(auto filename: fileNames)
+    {
+        _playlist->addMedia(QUrl::fromLocalFile(filename));
+    }
+
+    if(_playlist->mediaCount() > 0)
+    {
+        // 设置播放第一个文件
+        _playlist->setCurrentIndex(0); //播放索引变为0
+    }
+}
+
+void ProTreeWidget::SlotStartMusic()
+{
+    QUrl mediaUrl = _playlist->currentMedia();
+    if (!mediaUrl.isEmpty()) {
+        _player->setAudioOutput(_audioOutput); // 为播放器设置音频输出
+        _audioOutput->setVolume(0.5);
+        _player->setSource(mediaUrl);
+        _player->play();
+    }
+}
+
+void ProTreeWidget::SlotStopMusic()
+{
+    _player->stop();
+}
+
+void ProTreeWidget::SlotMusicChanged(int index)
+{
+    QUrl mediaUrl = _playlist->currentMedia();
+    if(!mediaUrl.isEmpty())
+    {
+        _player->setSource(mediaUrl);
+        _player->play();
+        qDebug() << "开始播放索引：" << index << ", 文件：" << mediaUrl.toLocalFile();
+    }
+}
+
 void ProTreeWidget::SlotUpdateOpenProgress(int count)
 {
     if(!_open_progressdlg) //判断进度对话框是否为空
@@ -315,5 +385,35 @@ void ProTreeWidget::SlotCancelOpenProgress()
     emit SigCancelOpenProgress(); //取消信号,需要与线程链接起来
     delete _open_progressdlg;
     _open_progressdlg = nullptr;
+}
+
+void ProTreeWidget::SlotSlideShow()
+{
+    if(!_right_btn_item)
+    {
+        return; //为空
+    }
+
+    auto *right_pro_item = dynamic_cast<ProTreeItem *>(_right_btn_item);
+
+    auto *first_child_item = right_pro_item->GetFirstPicChild(); //获取第一个节点
+    if(!first_child_item)
+    {
+        return;
+    }
+
+    qDebug()<< "first_child_item is" << first_child_item->GetPath();
+
+    auto *last_child_item = right_pro_item->GetLastPicChild(); //获取最后一个节点
+    if(!last_child_item)
+    {
+        return;
+    }
+
+    qDebug()<< "last_child_item is" << last_child_item->GetPath();
+
+    _slide_show_dlg = std::make_shared<SlideShowDialog>(this, first_child_item, last_child_item);
+    _slide_show_dlg->setModal(true);
+    _slide_show_dlg->showMaximized();
 }
 

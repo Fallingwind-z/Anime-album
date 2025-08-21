@@ -1,4 +1,4 @@
-QT       += core gui
+QT       += core gui multimedia
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -12,30 +12,42 @@ SOURCES += \
     confirmpage.cpp \
     main.cpp \
     mainwindow.cpp \
+    mediaplaylist.cpp \
     opentreethread.cpp \
+    picanimationwidget.cpp \
     picbutton.cpp \
     picshow.cpp \
+    picstatusbutton.cpp \
+    prelistitem.cpp \
+    prelistwidget.cpp \
     prosetpage.cpp \
     protree.cpp \
     protreeitem.cpp \
     protreethread.cpp \
     protreewidget.cpp \
     removeprodialog.cpp \
+    slideshowdialog.cpp \
     wizard.cpp
 
 HEADERS += \
     confirmpage.h \
     const.h \
     mainwindow.h \
+    mediaplaylist.h \
     opentreethread.h \
+    picanimationwidget.h \
     picbutton.h \
     picshow.h \
+    picstatusbutton.h \
+    prelistitem.h \
+    prelistwidget.h \
     prosetpage.h \
     protree.h \
     protreeitem.h \
     protreethread.h \
     protreewidget.h \
     removeprodialog.h \
+    slideshowdialog.h \
     wizard.h
 
 FORMS += \
@@ -45,6 +57,7 @@ FORMS += \
     prosetpage.ui \
     protree.ui \
     removeprodialog.ui \
+    slideshowdialog.ui \
     wizard.ui
 
 # Default rules for deployment.

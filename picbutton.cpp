@@ -15,6 +15,7 @@ void PicButton::SetIcons(const QString &normal, const QString &hover, const QStr
     tempPixmap.load(normal);
     this->resize(tempPixmap.size());
     this->setIcon(tempPixmap);
+    this->setIconSize(tempPixmap.size());
 }
 
 bool PicButton::event(QEvent *e)

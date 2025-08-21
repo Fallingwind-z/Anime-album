@@ -6,6 +6,12 @@
 #include <QProgressDialog>
 #include "protreethread.h"
 #include "opentreethread.h"
+#include "mediaplaylist.h"
+#include <QtMultiMedia/QMediaPlayer>
+#include <QUrl>
+#include <QAudioOutput>
+
+class SlideShowDialog; //前向声明，避免互引用，可在.cpp中包含具体的头文件
 
 class ProTreeWidget : public QTreeWidget
 {
@@ -27,6 +33,11 @@ private:
     QProgressDialog *_open_progressdlg;
     std::shared_ptr<ProTreeThread> _thread_create_pro; //用智能指针管理创建项目线程的生命周期
     std::shared_ptr<OpenTreeThread> _thread_open_pro; //用智能指针管理打开项目线程的生命周期
+    std::shared_ptr<SlideShowDialog> _slide_show_dlg; //SlideShowDialog的成员变量-智能指针
+    QMediaPlayer *_player;
+    QAudioOutput *_audioOutput; // Qt6 新增，用于音频输出
+    MediaPlaylist *_playlist; // 替代 QMediaPlaylist，存储所有音乐URL
+    int _currentIndex;   // 当前播放索引
 
 private slots:
     void SlotItemPressed(QTreeWidgetItem *item, int column);
@@ -40,11 +51,16 @@ private slots:
     void SlotUpdateOpenProgress(int count);
     void SlotFinishOpenProgress();
     void SlotCancelOpenProgress();
+    void SlotSlideShow();
 
 public slots:
     void SlotOpenPro(const QString &path); //需要用public slots，因为是从mainwindow中来的
     void SlotPreShow();
     void SlotNextShow();
+    void SlotSetMusic();
+    void SlotStartMusic();
+    void SlotStopMusic();
+    void SlotMusicChanged(int index);
 
 signals:
     void SigCancelProgress();
