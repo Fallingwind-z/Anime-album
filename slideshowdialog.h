@@ -25,6 +25,7 @@ private:
 public slots:
     void SlotSlidePre();
     void SlotSlideNext();
+    void SlotCloseShow(); //新增关闭幻灯片槽函数
 };
 
 #endif // SLIDESHOWDIALOG_H

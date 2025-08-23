@@ -4,7 +4,7 @@
 #include <QPainter>
 
 PicAnimationWidget::PicAnimationWidget(QWidget *parent)
-    : QWidget{parent}, _factor(0.0), _cur_item(nullptr), _b_start(false)
+    : QWidget{parent}, _factor(0.0), _cur_item(nullptr), _b_start(false), _b_paused(false)
 {
     _timer = new QTimer(this);
     connect(_timer, &QTimer::timeout, this, &PicAnimationWidget::TimeOut);
@@ -67,6 +67,7 @@ void PicAnimationWidget::Stop()
     _timer->stop();
     _factor = 0;
     _b_start = false;
+    _b_paused = false; // 重置暂停状态
 }
 
 void PicAnimationWidget::SlidePre()
@@ -118,42 +119,37 @@ void PicAnimationWidget::paintEvent(QPaintEvent *event)
     QRect rect = geometry(); // 获取当前控件的大小
     int w = rect.width();
     int h = rect.height();
-    _pixmap1 = _pixmap1.scaled(w, h, Qt::KeepAspectRatio); // 等比拉伸第一张图片
-    int alpha = 255 * (1.0f - _factor); // 计算第一张图片的透明度（根据_factor因子，范围0-1）
-    QPixmap alphaPixmap1(_pixmap1.size()); // 创建临时图片
-    alphaPixmap1.fill(Qt::transparent); // 填充成透明背景，相当于_pixmap1的遮罩
-
-    QPainter p1(&alphaPixmap1); //p1用来画alphaPixmap
-    p1.setCompositionMode(QPainter::CompositionMode_Source); // CompositionMode_Source直接写入新像素，忽略目标位置原有内容
-    p1.drawPixmap(0, 0, _pixmap1); // 在临时图片alphaPixmap的(0,0)位置绘制原始图片(_pixmap1)
-    p1.setCompositionMode(QPainter::CompositionMode_Destination); // CompositionMode_Destination只修改目标位置像素的alpha值，保持颜色不变
-    p1.fillRect(alphaPixmap1.rect(), QColor(0, 0, 0, alpha));
-    p1.end(); // 结束绘制操作，确保所有绘图指令执行完成
-    // 计算居中位置并绘制第一张图片
-    int x = (w - _pixmap1.width()) / 2;
-    int y = (h - _pixmap1.height()) / 2;
-    painter.drawPixmap(x, y, alphaPixmap1);
-
+    
+    // 缩放第一张图片，保持宽高比
+    QPixmap scaledPixmap1 = _pixmap1.scaled(w, h, Qt::KeepAspectRatio);
+    
+    // 计算第一张图片的居中位置
+    int x1 = (w - scaledPixmap1.width()) / 2;
+    int y1 = (h - scaledPixmap1.height()) / 2;
+    
+    // 绘制第一张图片，设置透明度
+    painter.setOpacity(1.0f - _factor); // 第一张图片透明度从1到0
+    painter.drawPixmap(x1, y1, scaledPixmap1);
+    
     // 如果第二张图片为空，直接返回
     if(_pixmap2.isNull())
     {
         return;
     }
+    
     // 缩放第二张图片，保持宽高比
-    _pixmap2 = _pixmap2.scaled(w, h, Qt::KeepAspectRatio);
-    alpha = 255 * (_factor); // 计算第二张图片的透明度（与第一张相反）
-    QPixmap alphaPixmap2(_pixmap2.size()); // 创建透明背景的临时图片
-    alphaPixmap2.fill(Qt::transparent);
-    QPainter p2(&alphaPixmap2); // 在临时图片上绘制第二张图片并设置透明度
-    p2.setCompositionMode(QPainter::CompositionMode_Source);
-    p2.drawPixmap(0, 0, _pixmap2);
-    p2.setCompositionMode(QPainter::CompositionMode_Destination);
-    p2.fillRect(alphaPixmap2.rect(), QColor(0, 0, 0, alpha));
-    p2.end();
-    // 计算居中位置并绘制第二张图片
-    x = (w - _pixmap2.width()) / 2;
-    y = (h - _pixmap2.height()) / 2;
-    painter.drawPixmap(x, y, alphaPixmap2);
+    QPixmap scaledPixmap2 = _pixmap2.scaled(w, h, Qt::KeepAspectRatio);
+    
+    // 计算第二张图片的居中位置
+    int x2 = (w - scaledPixmap2.width()) / 2;
+    int y2 = (h - scaledPixmap2.height()) / 2;
+    
+    // 绘制第二张图片，设置透明度
+    painter.setOpacity(_factor); // 第二张图片透明度从0到1
+    painter.drawPixmap(x2, y2, scaledPixmap2);
+    
+    // 重置透明度
+    painter.setOpacity(1.0f);
 }
 
 void PicAnimationWidget::UpdateSelectPixmap(QTreeWidgetItem *item)
@@ -170,7 +166,7 @@ void PicAnimationWidget::UpdateSelectPixmap(QTreeWidgetItem *item)
 
     if(_map_items.find(path) == _map_items.end())
     {
-        _map_items[path] == tree_item;
+        _map_items[path] = tree_item;
     }
 
     auto *next_item = tree_item->GetNextItem();
@@ -179,7 +175,7 @@ void PicAnimationWidget::UpdateSelectPixmap(QTreeWidgetItem *item)
         return;
     }
 
-    auto next_path = tree_item->GetPath();
+    auto next_path = next_item->GetPath();
     _pixmap2.load(next_path);
     if(_map_items.find(next_path) == _map_items.end())
     {
@@ -197,7 +193,7 @@ void PicAnimationWidget::TimeOut()
         return;
     }
 
-    _factor = _factor + 0.01;
+    _factor = _factor + 0.01; //增加增量，让淡入淡出效果更明显
     if(_factor >= 1) //_factor >= 1 播放下一张图片
     {
         _factor = 0;
@@ -236,7 +232,14 @@ void PicAnimationWidget::SlotStartOrStop()
         _factor = 0;
         _timer->start(25);
         _b_start = true;
-        emit SigStartMusic();
+        if (_b_paused) {
+            // 从暂停状态恢复，发送恢复音乐信号
+            emit SigResumeMusic();
+            _b_paused = false;
+        } else {
+            // 首次开始播放，发送开始音乐信号
+            emit SigStartMusic();
+        }
     }
     else
     {
@@ -244,6 +247,7 @@ void PicAnimationWidget::SlotStartOrStop()
         _factor = 0;
         update();
         _b_start = false;
-        emit SigStopMusic();
+        _b_paused = true; // 标记为暂停状态
+        emit SigPauseMusic(); //发送暂停音乐信号
     }
 }

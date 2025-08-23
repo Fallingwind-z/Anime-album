@@ -360,6 +360,7 @@ Makefile: ../../Album.pro E:/Qt/6.5.3/mingw_64/mkspecs/win32-g++/qmake.conf E:/Q
 		E:/Qt/6.5.3/mingw_64/lib/Qt6Widgets.prl \
 		E:/Qt/6.5.3/mingw_64/lib/Qt6Gui.prl \
 		E:/Qt/6.5.3/mingw_64/lib/Qt6Network.prl \
+		E:/Qt/6.5.3/mingw_64/lib/Qt6Sql.prl \
 		E:/Qt/6.5.3/mingw_64/lib/Qt6Core.prl \
 		E:/Qt/6.5.3/mingw_64/lib/Qt6EntryPoint.prl \
 		E:/Qt/6.5.3/mingw_64/mkspecs/features/build_pass.prf \
@@ -655,6 +656,7 @@ E:/Qt/6.5.3/mingw_64/lib/Qt6Multimedia.prl:
 E:/Qt/6.5.3/mingw_64/lib/Qt6Widgets.prl:
 E:/Qt/6.5.3/mingw_64/lib/Qt6Gui.prl:
 E:/Qt/6.5.3/mingw_64/lib/Qt6Network.prl:
+E:/Qt/6.5.3/mingw_64/lib/Qt6Sql.prl:
 E:/Qt/6.5.3/mingw_64/lib/Qt6Core.prl:
 E:/Qt/6.5.3/mingw_64/lib/Qt6EntryPoint.prl:
 E:/Qt/6.5.3/mingw_64/mkspecs/features/build_pass.prf:

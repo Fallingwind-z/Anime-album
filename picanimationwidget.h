@@ -27,6 +27,7 @@ private:
     QTreeWidgetItem *_cur_item; //当前播放到哪了
     QMap<QString, QTreeWidgetItem *> _map_items; //
     bool _b_start; //是否开始播放
+    bool _b_paused; //是否处于暂停状态
 
 private slots:
     void TimeOut();
@@ -42,6 +43,8 @@ signals:
     void SigStop();
     void SigStartMusic();
     void SigStopMusic();
+    void SigPauseMusic(); //暂停音乐信号
+    void SigResumeMusic(); //恢复音乐信号
 };
 
 #endif // PICANIMATIONWIDGET_H

@@ -10,7 +10,7 @@
 #include <QFileDialog>
 
 MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
+    : QMainWindow(parent), _proTreeWidget(nullptr)
     , ui(new Ui::MainWindow)
 {
     this->setMinimumSize(1629, 869); //让窗口以这个比例来缩放
@@ -54,9 +54,15 @@ MainWindow::MainWindow(QWidget *parent)
     connect(pro_pic_show, &PicShow::SigNextClicked, pro_tree_widget, &ProTreeWidget::SlotNextShow);
     connect(pro_tree_widget, &ProTreeWidget::SigUpdatePic, pro_pic_show, &PicShow::SlotUpdatePic);
     connect(pro_tree_widget, &ProTreeWidget::SigClearSelected, pro_pic_show, &PicShow::SlotDeleteItem);
-
     //音乐动作
     connect(act_music, &QAction::triggered, pro_tree_widget, &ProTreeWidget::SlotSetMusic);
+
+    // 初始化数据库
+    _dbManager = new DatabaseManager(this);
+    _dbManager->initDatabase();
+    _proTreeWidget = dynamic_cast<ProTreeWidget *>(tree_widget);
+    // 恢复上次打开的项目
+    restorePro();
 }
 
 MainWindow::~MainWindow()
@@ -64,11 +70,44 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::savePro()
+{
+    // 清空数据库中的项目记录
+    _dbManager->deletePro();
+
+    // 获取当前打开的所有项目
+    QStringList openPro = _proTreeWidget->getOpenPro();
+    for(const QString &path : openPro)
+    {
+        QDir dir(path);
+        QString proName = dir.dirName();
+        _dbManager->savePro(proName, path);
+    }
+}
+
+void MainWindow::restorePro()
+{
+    // 从数据库获取上次打开的项目
+    QStringList savedPro = _dbManager->getOpenPro();
+
+    // 重新打开每个项目
+    for(const QString &path : savedPro)
+    {
+        emit SigOpenPro(path);
+    }
+}
+
 void MainWindow::resizeEvent(QResizeEvent *event)
 {
     auto *pro_pic_show = dynamic_cast<PicShow *>(_picshow);
     pro_pic_show->ReloadPic();
     QMainWindow::resizeEvent(event);
+}
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    savePro();
+    QMainWindow::closeEvent(event);
 }
 
 void MainWindow::SlotCreatePro(bool)
@@ -81,6 +120,8 @@ void MainWindow::SlotCreatePro(bool)
     //连接信号和槽，把项目配置传回来
     //_protree是QWidget类型，而AddProToTree是ProTree类型，需要dynamic_cast安全转换
     connect(&wizard, &Wizard::SigProSettings, dynamic_cast<ProTree*>(_protree), &ProTree::AddProToTree);
+    // 连接信号和槽，把项目配置传回来并保存到数据库
+    connect(&wizard, &Wizard::SigProSettings, this, &MainWindow::SlotProSettings);
     wizard.show();
     wizard.exec();
     //断开所有信号
@@ -107,4 +148,15 @@ void MainWindow::SlotOpenPro(bool)
 
     QString import_path = fileNames.at(0);
     emit SigOpenPro(import_path); //告诉ProTreeWidget导入了哪个路径
+
+    // 保存项目到数据库
+    QDir dir(import_path);
+    QString proName = dir.dirName();
+    _dbManager->savePro(proName, import_path);
+}
+
+void MainWindow::SlotProSettings(const QString name, const QString path)
+{
+    // 保存项目到数据库
+    _dbManager->savePro(name, path);
 }

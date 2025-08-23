@@ -19,6 +19,7 @@ class ProTreeWidget : public QTreeWidget
 public:
     ProTreeWidget(QWidget *parent = nullptr);
     void AddProToTree(const QString &name, const QString &path);
+    QStringList getOpenPro();
 
 private:
     QSet<QString> _set_path; //用来判断重名
@@ -60,6 +61,8 @@ public slots:
     void SlotSetMusic();
     void SlotStartMusic();
     void SlotStopMusic();
+    void SlotPauseMusic(); //暂停音乐槽函数
+    void SlotResumeMusic(); //恢复音乐槽函数
     void SlotMusicChanged(int index);
 
 signals:

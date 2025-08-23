@@ -70,12 +70,14 @@ static constexpr auto qt_meta_stringdata_CLASSProTreeWidgetENDCLASS = QtMocHelpe
     "SlotSetMusic",
     "SlotStartMusic",
     "SlotStopMusic",
+    "SlotPauseMusic",
+    "SlotResumeMusic",
     "SlotMusicChanged",
     "index"
 );
 #else  // !QT_MOC_HAS_STRING_DATA
 struct qt_meta_stringdata_CLASSProTreeWidgetENDCLASS_t {
-    uint offsetsAndSizes[68];
+    uint offsetsAndSizes[72];
     char stringdata0[14];
     char stringdata1[18];
     char stringdata2[1];
@@ -108,8 +110,10 @@ struct qt_meta_stringdata_CLASSProTreeWidgetENDCLASS_t {
     char stringdata29[13];
     char stringdata30[15];
     char stringdata31[14];
-    char stringdata32[17];
-    char stringdata33[6];
+    char stringdata32[15];
+    char stringdata33[16];
+    char stringdata34[17];
+    char stringdata35[6];
 };
 #define QT_MOC_LITERAL(ofs, len) \
     uint(sizeof(qt_meta_stringdata_CLASSProTreeWidgetENDCLASS_t::offsetsAndSizes) + ofs), len 
@@ -147,8 +151,10 @@ Q_CONSTINIT static const qt_meta_stringdata_CLASSProTreeWidgetENDCLASS_t qt_meta
         QT_MOC_LITERAL(409, 12),  // "SlotSetMusic"
         QT_MOC_LITERAL(422, 14),  // "SlotStartMusic"
         QT_MOC_LITERAL(437, 13),  // "SlotStopMusic"
-        QT_MOC_LITERAL(451, 16),  // "SlotMusicChanged"
-        QT_MOC_LITERAL(468, 5)   // "index"
+        QT_MOC_LITERAL(451, 14),  // "SlotPauseMusic"
+        QT_MOC_LITERAL(466, 15),  // "SlotResumeMusic"
+        QT_MOC_LITERAL(482, 16),  // "SlotMusicChanged"
+        QT_MOC_LITERAL(499, 5)   // "index"
     },
     "ProTreeWidget",
     "SigCancelProgress",
@@ -182,6 +188,8 @@ Q_CONSTINIT static const qt_meta_stringdata_CLASSProTreeWidgetENDCLASS_t qt_meta
     "SlotSetMusic",
     "SlotStartMusic",
     "SlotStopMusic",
+    "SlotPauseMusic",
+    "SlotResumeMusic",
     "SlotMusicChanged",
     "index"
 };
@@ -195,7 +203,7 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSProTreeWidgetENDCLASS[] = {
       11,       // revision
        0,       // classname
        0,    0, // classinfo
-      24,   14, // methods
+      26,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -203,32 +211,34 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSProTreeWidgetENDCLASS[] = {
        5,       // signalCount
 
  // signals: name, argc, parameters, tag, flags, initial metatype offsets
-       1,    0,  158,    2, 0x06,    1 /* Public */,
-       3,    0,  159,    2, 0x06,    2 /* Public */,
-       4,    1,  160,    2, 0x06,    3 /* Public */,
-       6,    1,  163,    2, 0x06,    5 /* Public */,
-       7,    0,  166,    2, 0x06,    7 /* Public */,
+       1,    0,  170,    2, 0x06,    1 /* Public */,
+       3,    0,  171,    2, 0x06,    2 /* Public */,
+       4,    1,  172,    2, 0x06,    3 /* Public */,
+       6,    1,  175,    2, 0x06,    5 /* Public */,
+       7,    0,  178,    2, 0x06,    7 /* Public */,
 
  // slots: name, argc, parameters, tag, flags, initial metatype offsets
-       8,    2,  167,    2, 0x08,    8 /* Private */,
-      12,    2,  172,    2, 0x08,   11 /* Private */,
-      15,    0,  177,    2, 0x08,   14 /* Private */,
-      16,    0,  178,    2, 0x08,   15 /* Private */,
-      17,    0,  179,    2, 0x08,   16 /* Private */,
-      18,    1,  180,    2, 0x08,   17 /* Private */,
-      20,    0,  183,    2, 0x08,   19 /* Private */,
-      21,    0,  184,    2, 0x08,   20 /* Private */,
-      22,    1,  185,    2, 0x08,   21 /* Private */,
-      23,    0,  188,    2, 0x08,   23 /* Private */,
-      24,    0,  189,    2, 0x08,   24 /* Private */,
-      25,    0,  190,    2, 0x08,   25 /* Private */,
-      26,    1,  191,    2, 0x0a,   26 /* Public */,
-      27,    0,  194,    2, 0x0a,   28 /* Public */,
-      28,    0,  195,    2, 0x0a,   29 /* Public */,
-      29,    0,  196,    2, 0x0a,   30 /* Public */,
-      30,    0,  197,    2, 0x0a,   31 /* Public */,
-      31,    0,  198,    2, 0x0a,   32 /* Public */,
-      32,    1,  199,    2, 0x0a,   33 /* Public */,
+       8,    2,  179,    2, 0x08,    8 /* Private */,
+      12,    2,  184,    2, 0x08,   11 /* Private */,
+      15,    0,  189,    2, 0x08,   14 /* Private */,
+      16,    0,  190,    2, 0x08,   15 /* Private */,
+      17,    0,  191,    2, 0x08,   16 /* Private */,
+      18,    1,  192,    2, 0x08,   17 /* Private */,
+      20,    0,  195,    2, 0x08,   19 /* Private */,
+      21,    0,  196,    2, 0x08,   20 /* Private */,
+      22,    1,  197,    2, 0x08,   21 /* Private */,
+      23,    0,  200,    2, 0x08,   23 /* Private */,
+      24,    0,  201,    2, 0x08,   24 /* Private */,
+      25,    0,  202,    2, 0x08,   25 /* Private */,
+      26,    1,  203,    2, 0x0a,   26 /* Public */,
+      27,    0,  206,    2, 0x0a,   28 /* Public */,
+      28,    0,  207,    2, 0x0a,   29 /* Public */,
+      29,    0,  208,    2, 0x0a,   30 /* Public */,
+      30,    0,  209,    2, 0x0a,   31 /* Public */,
+      31,    0,  210,    2, 0x0a,   32 /* Public */,
+      32,    0,  211,    2, 0x0a,   33 /* Public */,
+      33,    0,  212,    2, 0x0a,   34 /* Public */,
+      34,    1,  213,    2, 0x0a,   35 /* Public */,
 
  // signals: parameters
     QMetaType::Void,
@@ -256,7 +266,9 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSProTreeWidgetENDCLASS[] = {
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
-    QMetaType::Void, QMetaType::Int,   33,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void, QMetaType::Int,   35,
 
        0        // eod
 };
@@ -325,6 +337,10 @@ Q_CONSTINIT const QMetaObject ProTreeWidget::staticMetaObject = { {
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
         // method 'SlotStopMusic'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        // method 'SlotPauseMusic'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        // method 'SlotResumeMusic'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
         // method 'SlotMusicChanged'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
         QtPrivate::TypeAndForceComplete<int, std::false_type>
@@ -361,7 +377,9 @@ void ProTreeWidget::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _i
         case 20: _t->SlotSetMusic(); break;
         case 21: _t->SlotStartMusic(); break;
         case 22: _t->SlotStopMusic(); break;
-        case 23: _t->SlotMusicChanged((*reinterpret_cast< std::add_pointer_t<int>>(_a[1]))); break;
+        case 23: _t->SlotPauseMusic(); break;
+        case 24: _t->SlotResumeMusic(); break;
+        case 25: _t->SlotMusicChanged((*reinterpret_cast< std::add_pointer_t<int>>(_a[1]))); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
@@ -423,13 +441,13 @@ int ProTreeWidget::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 24)
+        if (_id < 26)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 24;
+        _id -= 26;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 24)
+        if (_id < 26)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 24;
+        _id -= 26;
     }
     return _id;
 }

@@ -1,4 +1,5 @@
 release/confirmpage.o
+release/databasemanager.o
 release/main.o
 release/mainwindow.o
 release/mediaplaylist.o
@@ -19,6 +20,7 @@ release/slideshowdialog.o
 release/wizard.o
 release/qrc_res.o
 release/moc_confirmpage.o
+release/moc_databasemanager.o
 release/moc_mainwindow.o
 release/moc_mediaplaylist.o
 release/moc_opentreethread.o

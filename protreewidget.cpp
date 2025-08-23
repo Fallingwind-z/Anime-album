@@ -14,7 +14,7 @@ ProTreeWidget::ProTreeWidget(QWidget *parent):QTreeWidget(parent),
     _selected_item(nullptr), _thread_create_pro(nullptr), _thread_open_pro(nullptr),
     _player(nullptr), _audioOutput(nullptr), _playlist(nullptr), _currentIndex(-1)
 {
-    this->setHeaderHidden(true);
+    this->setHeaderHidden(true); //隐藏表头
     connect(this, &ProTreeWidget::itemPressed, this, &ProTreeWidget::SlotItemPressed);
     _action_import = new QAction(QIcon(":/icon/import.png"), tr("导入文件"), this);
     _action_setstart = new QAction(QIcon(":/icon/core.png"), tr("设置活动项目"), this);
@@ -35,12 +35,14 @@ void ProTreeWidget::AddProToTree(const QString &name, const QString &path)
 {
     QDir dir(path);
     QString file_path = dir.absoluteFilePath(name); //拼成路径
+    //检测重名，判断路径和名字都一样则拒绝加入
     if(_set_path.find(file_path) != _set_path.end()) // 检查路径集合中是否已存在该路径（防止重名）
     {
         return; //重名直接return
     }
 
     QDir pro_dir(file_path);
+    //如果文件夹不存在则创建
     if(!pro_dir.exists())
     {
         bool enable = pro_dir.mkpath(file_path);  // 如果不存在则创建目录
@@ -56,6 +58,16 @@ void ProTreeWidget::AddProToTree(const QString &name, const QString &path)
     item->setData(0, Qt::DecorationRole, QIcon(":/icon/dir.png")); // 设置第一列的图标为目录图标，Qt::DecorationRole：设置项的图标
     item->setData(0, Qt::ToolTipRole, file_path); // 设置第一列的提示信息为完整路径，Qt::ToolTipRole：设置项的悬停提示信息
     this->addTopLevelItem(item); //将 item 添加到树形控件（ProTreeWidget）的最顶层，作为根节点显示
+}
+
+QStringList ProTreeWidget::getOpenPro()
+{
+    QStringList albumPro;
+    for(const QString &path : _set_path)
+    {
+        albumPro.append(path);
+    }
+    return albumPro;
 }
 
 void ProTreeWidget::SlotItemPressed(QTreeWidgetItem *pressedItem, int column)
@@ -300,7 +312,7 @@ void ProTreeWidget::SlotSetMusic()
     QFileDialog file_dialog;
     file_dialog.setFileMode(QFileDialog::ExistingFiles);
     file_dialog.setWindowTitle(tr("选择音频文件"));
-    file_dialog.setDirectory(QDir::currentPath());
+    file_dialog.setDirectory("D:/Code/C++/C++Qt/projects/Album/music");
     file_dialog.setViewMode(QFileDialog::Detail);
     file_dialog.setNameFilter("(*.mp3 *.m4a *.flac)");
     QStringList fileNames;
@@ -336,7 +348,7 @@ void ProTreeWidget::SlotStartMusic()
     QUrl mediaUrl = _playlist->currentMedia();
     if (!mediaUrl.isEmpty()) {
         _player->setAudioOutput(_audioOutput); // 为播放器设置音频输出
-        _audioOutput->setVolume(0.5);
+        _audioOutput->setVolume(0.4);
         _player->setSource(mediaUrl);
         _player->play();
     }
@@ -345,6 +357,16 @@ void ProTreeWidget::SlotStartMusic()
 void ProTreeWidget::SlotStopMusic()
 {
     _player->stop();
+}
+
+void ProTreeWidget::SlotPauseMusic()
+{
+    _player->pause();
+}
+
+void ProTreeWidget::SlotResumeMusic()
+{
+    _player->play();
 }
 
 void ProTreeWidget::SlotMusicChanged(int index)
